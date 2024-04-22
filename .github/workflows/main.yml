@@ -7,11 +7,11 @@ on:
         type: choice
         description: "Select a docker image to deploy"
         options:
-          - "1"
-          - "2"
-          - "3"
-          - "4"
-          - "5"
+          - "nginx"
+          - "httpd"
+          - "mysql"
+          - "postgres"
+          - "redis"
 
 jobs:
   deploy:
@@ -26,6 +26,25 @@ jobs:
           images=("nginx" "httpd" "mysql" "postgres" "redis")
           selected_image=${images[${{ github.event.inputs.option }} - 1]}
           echo "::set-output name=image::$selected_image"
+
+          if [ ${{ github.event.inputs.option }} == 'nginx' ]; then
+            selected_image=${images[0]}
+            echo "::set-output name=image::$selected_image"
+          elif [ ${{ github.event.inputs.option }} == 'httpd' ]; then
+            selected_image=${images[1]}
+            echo "::set-output name=image::$selected_image"
+          elif [ ${{ github.event.inputs.option }} == 'mysql' ]; then
+            selected_image=${images[2]}
+            echo "::set-output name=image::$selected_image"
+          elif [ ${{ github.event.inputs.option }} == 'postgres' ]; then
+            selected_image=${images[3]}
+            echo "::set-output name=image::$selected_image"
+          elif [ ${{ github.event.inputs.option }} == 'redis' ]; then
+            selected_image=${images[4]}
+            echo "::set-output name=image::$selected_image"
+          else
+            echo "Invalid Choice"
+          fi
 
       - name: Deploy Docker Image
         run: docker run -d ${{ steps.fetch_image.outputs.image }}
