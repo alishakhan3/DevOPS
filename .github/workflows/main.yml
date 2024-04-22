@@ -38,7 +38,7 @@ jobs:
             echo "Invalid Choice"
             exit 1
           fi
-          echo "::set-output name=image::$selected_image"
+          echo "image=$selected_image" >>$GITHUB_OUTPUT
 
       - name: Deploy Docker Image
         run: docker run -d ${{ steps.fetch_image.outputs.image }}
