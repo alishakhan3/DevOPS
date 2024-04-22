@@ -1,18 +1,21 @@
-name: Deploy Selected Docker Image
+name: Docker Image
 
 on:
   workflow_dispatch:
     inputs:
-      option:
-        description: "Select an option"
-        required: true
-        default: "1"
+      name:
+        type: choice
+        description: "Select a docker image to deploy"
         options:
           - "1"
           - "2"
           - "3"
           - "4"
           - "5"
+      message:
+        required: true
+      environment:
+        type: environment
 
 jobs:
   deploy:
