@@ -24,27 +24,21 @@ jobs:
         id: fetch_image
         run: |
           images=("nginx" "httpd" "mysql" "postgres" "redis")
-          selected_image=${images[${{ github.event.inputs.option }} - 1]}
-          echo "::set-output name=image::$selected_image"
-
-          if [ ${{ github.event.inputs.option }} == 'nginx' ]; then
+          if [ ${{ github.event.inputs.name }} == 'nginx' ]; then
             selected_image=${images[0]}
-            echo "::set-output name=image::$selected_image"
-          elif [ ${{ github.event.inputs.option }} == 'httpd' ]; then
+          elif [ ${{ github.event.inputs.name }} == 'httpd' ]; then
             selected_image=${images[1]}
-            echo "::set-output name=image::$selected_image"
-          elif [ ${{ github.event.inputs.option }} == 'mysql' ]; then
+          elif [ ${{ github.event.inputs.name }} == 'mysql' ]; then
             selected_image=${images[2]}
-            echo "::set-output name=image::$selected_image"
-          elif [ ${{ github.event.inputs.option }} == 'postgres' ]; then
+          elif [ ${{ github.event.inputs.name }} == 'postgres' ]; then
             selected_image=${images[3]}
-            echo "::set-output name=image::$selected_image"
-          elif [ ${{ github.event.inputs.option }} == 'redis' ]; then
+          elif [ ${{ github.event.inputs.name }} == 'redis' ]; then
             selected_image=${images[4]}
-            echo "::set-output name=image::$selected_image"
           else
             echo "Invalid Choice"
+            exit 1
           fi
+          echo "::set-output name=image::$selected_image"
 
       - name: Deploy Docker Image
         run: docker run -d ${{ steps.fetch_image.outputs.image }}
