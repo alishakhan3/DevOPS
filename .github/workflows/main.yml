@@ -12,10 +12,6 @@ on:
           - "3"
           - "4"
           - "5"
-      message:
-        required: true
-      environment:
-        type: environment
 
 jobs:
   deploy:
