@@ -1,8 +1,33 @@
-name: hello-world
-on: push
+name: Deploy Random Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      option:
+        description: "Select an option"
+        required: true
+        default: "1"
+        options:
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+          - "5"
+
 jobs:
-  my-job:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: my-step
-        run: echo "Hello World!"
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Fetch random Docker image
+        id: fetch_image
+        run: |
+          images=("nginx" "httpd" "mysql" "postgres" "redis")
+          rand=$(((RANDOM % 5) + 1))
+          selected_image=${images[$rand]}
+          echo "::set-output name=image::$selected_image"
+
+      - name: Deploy Docker Image
+        run: docker run -d ${{ steps.fetch_image.outputs.image }}
