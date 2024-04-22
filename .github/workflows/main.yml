@@ -1,4 +1,4 @@
-name: Deploy Random Docker Image
+name: Deploy Selected Docker Image
 
 on:
   workflow_dispatch:
@@ -21,12 +21,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Fetch random Docker image
+      - name: Fetch Docker image name
         id: fetch_image
         run: |
           images=("nginx" "httpd" "mysql" "postgres" "redis")
-          rand=$(((RANDOM % 5) + 1))
-          selected_image=${images[$rand]}
+          selected_image=${images[${{ github.event.inputs.option }} - 1]}
           echo "::set-output name=image::$selected_image"
 
       - name: Deploy Docker Image
